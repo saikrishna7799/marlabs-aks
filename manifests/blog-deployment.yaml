@@ -1,0 +1,32 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blogapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: blogapp
+  template:
+    metadata:
+      labels:
+        app: blogapp
+    spec:
+      containers:
+      - name: blogapp
+        image: myregistry.azurecr.io/blogapp:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blogapp-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: blogapp
+  ports:
+    - port: 80
+      targetPort: 80
